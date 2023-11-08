@@ -5,11 +5,11 @@ import random
 root = tk.Tk()
 root.title("Guľka")
 
-x_mouse, y_mouse = 0,0
+x_mouse, y_mouse = 0, 0
 y_gulka = 20
-x_gulka = 0
+x_gulka = random.randint(0, 1400)
 velkost_gulky = 50
-sirka_podstavy = 100 #polomer
+sirka_podstavy = 100  # polomer
 is_gulka = False
 rychlost = 3
 score = 0
@@ -19,39 +19,47 @@ def update_mouse_position(event):
     global x_mouse, y_mouse
     x_mouse, y_mouse = event.x, event.y
     canvas.delete("podstava")
-    canvas.create_rectangle(x_mouse - sirka_podstavy,650,x_mouse+sirka_podstavy,680,outline ="black",fill ="white",width = 2, tags="podstava")
+    canvas.create_rectangle(x_mouse - sirka_podstavy, 650, x_mouse+sirka_podstavy,
+                            680, outline="black", fill="white", width=2, tags="podstava")
 
 
 # def generate_gulka():
 #     poloha  = random.randint(50,1300)
 
 
-
 def gulka_pohyb():
-    global x_mouse, y_mouse , x_gulka , y_gulka, velkost_gulky, is_gulka, rychlost, sirka_podstavy, score
-   
-    print(x_mouse)
-    canvas.delete("gulka")
-   
-    if is_gulka == False: 
-        # x_gulka = random.randint(50,1300)
-        x_gulka= 200
-        is_gulka = True
-    else:
-        canvas.create_oval(x_gulka,y_gulka, x_gulka +velkost_gulky, y_gulka + velkost_gulky,outline ="black",fill ="red",width = 2, tags="gulka")
-        y_gulka += rychlost
-        if y_gulka  >= (650 - velkost_gulky )  and (x_mouse - sirka_podstavy)<  x_gulka and (x_mouse + sirka_podstavy)> x_gulka:
-            # rychlost += 3
-            # sirka_podstavy -= 2
-            score +=1
-            Score_label.config(text=f"Score: {score}")
-            rychlost = rychlost * (-1)
-        elif y_gulka <= 0:
-            rychlost = rychlost * (-1)
+     global x_mouse, y_mouse, x_gulka, y_gulka, velkost_gulky, is_gulka, rychlost, sirka_podstavy, score, is_gulka
 
+     canvas.delete("gulka")
 
+   
 
     
+     canvas.create_oval(x_gulka, y_gulka, x_gulka + velkost_gulky, y_gulka +
+                        velkost_gulky, outline="black", fill="red", width=2, tags="gulka")
+     y_gulka += rychlost
+     if y_gulka >= (650 - velkost_gulky) and (x_mouse - sirka_podstavy) <= x_gulka and (x_mouse + sirka_podstavy) >= x_gulka:
+         # rychlost += 3
+        #  sirka_podstavy -= 5
+         score += 1
+         Score_label.config(text=f"Score: {score}")
+         rychlost += 1
+         rychlost = rychlost * (-1)
+     elif y_gulka >= 700:
+         y_gulka = (0 + velkost_gulky)
+         x_gulka = random.randint(50, 1300)
+
+         score = 0
+         rychlost = 3
+         canvas.create_oval(x_gulka, y_gulka, x_gulka + velkost_gulky, y_gulka +
+                           velkost_gulky, outline="black", fill="red", width=2, tags="gulka")
+         Score_label.config(text=f"Score: {score}")
+
+     elif y_gulka <= 0:
+            rychlost = rychlost * (-1)
+            Score_label.config(text=f"Score: {score}")
+
+
 
 def clock():
     gulka_pohyb()
